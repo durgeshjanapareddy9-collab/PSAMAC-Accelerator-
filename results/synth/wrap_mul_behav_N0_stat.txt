@@ -3,9 +3,9 @@
 
 === mul_wrap ===
 
-   Number of wires:                282
+   Number of wires:                253
    Number of wire bits:            282
-   Number of public wires:          65
+   Number of public wires:          36
    Number of public wire bits:      65
    Number of memories:               0
    Number of memory bits:            0

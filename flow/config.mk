@@ -15,6 +15,8 @@ PDK      ?= sky130A
 # Corner: tt = typical transistors, 25 degrees C, 1.80 V supply.
 LIB_NAME ?= sky130_fd_sc_hd__tt_025C_1v80.lib
 LIB      ?= $(PDK_ROOT)/$(PDK)/libs.ref/sky130_fd_sc_hd/lib/$(LIB_NAME)
+# Verilog simulation models of the same cells (for gate-level simulation).
+CELL_MODELS ?= $(PDK_ROOT)/$(PDK)/libs.ref/sky130_fd_sc_hd/verilog
 
 # ---- Tools -----------------------------------------------------------------
 YOSYS     ?= yosys

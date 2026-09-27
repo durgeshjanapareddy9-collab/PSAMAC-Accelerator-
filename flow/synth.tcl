@@ -46,10 +46,10 @@ abc -liberty $lib
 
 # 4. Clean-up so the netlist is easy for OpenSTA to read:
 #    constant 0/1 outputs are driven by a sky130 "tie" cell (conb_1),
-#    and multi-bit wires are split into single bits.
+#    and multi-bit internal wires are split into single bits (ports stay buses).
 setundef -zero
 hilomap -singleton -hicell sky130_fd_sc_hd__conb_1 HI -locell sky130_fd_sc_hd__conb_1 LO
-splitnets -ports
+splitnets
 opt_clean -purge
 
 # 5. Reports and netlist.

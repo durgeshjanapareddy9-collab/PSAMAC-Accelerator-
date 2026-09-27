@@ -91,8 +91,11 @@ synth-one: $(SYNTH_LIB)
 	TOP=$(TOP) N=$(N) SRCS="$(SRCS)" LIB=$(SYNTH_LIB) OUT=$(SYNTH_OUT) \
 	    $(YOSYS) -q -l $(SYNTH_OUT)/$(TOP)_N$(N).log -c flow/synth.tcl
 
-power:
-	@echo "make power: not implemented yet (M1.10)"; false
+# Power (gate-level simulation + OpenSTA) for N=0 and a*b -> results/power_n0.csv
+# Uses the netlists from `make synth`.
+power: synth
+	$(PYTHON) flow/power.py --out results/power_n0.csv --design approx_mul:0 --design mul_behav:0 \
+	    --lib $(LIB) --sta $(STA) --cell-models $(CELL_MODELS) --iverilog $(IVERILOG) --vvp $(VVP)
 
 sweep:
 	@echo "make sweep: not implemented yet (M1.11/M2.5)"; false
