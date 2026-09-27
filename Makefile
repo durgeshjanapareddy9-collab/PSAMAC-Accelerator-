@@ -21,7 +21,7 @@ include flow/config.mk
 # Truncation depths covered by the sweep.
 NS := 0 1 2 3 4 5 6 7 8 9 10 11 12
 
-.PHONY: venv versions test metrics synth synth-one power sweep baselines eval cnn \
+.PHONY: venv versions test test-model metrics synth synth-one power sweep baselines eval cnn \
         analysis figures all clean
 
 # ---- Setup -------------------------------------------------------------------
@@ -40,8 +40,13 @@ versions: venv
 # ---- Project steps (filled in as the tasks in PROGRESS.md are done) ----------
 # Each placeholder fails on purpose, so nobody mistakes it for a passing step.
 
-test:
-	@echo "make test: not implemented yet (PROGRESS.md M1.5/M1.6)"; false
+test: test-model
+	@echo "RTL part of make test: not implemented yet (M1.5/M1.6)"; false
+
+# Python model unit tests, and build the cached LUTs in results/.
+test-model: venv
+	$(PYTHON) -m pytest -q model/tests
+	$(PYTHON) -m model.approx_mul
 
 metrics:
 	@echo "make metrics: not implemented yet (M1.7)"; false
