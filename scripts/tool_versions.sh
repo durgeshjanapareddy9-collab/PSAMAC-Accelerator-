@@ -2,11 +2,11 @@
 # scripts/tool_versions.sh -- record the exact tool versions used, so every
 # number in results/ can be reproduced later (project rule 5).
 #
-# Usage: scripts/tool_versions.sh <yosys> <sta> <iverilog> <verilator> <python> <liberty file>
+# Usage: scripts/tool_versions.sh <yosys> <sta> <iverilog> <verilator> <python> <liberty file> [opensta source dir]
 # Normally called through `make versions`, which passes the paths from flow/config.mk.
 # Writes results/tool_versions.txt.
 
-YOSYS=$1; STA=$2; IVERILOG=$3; VERILATOR=$4; PYTHON=$5; LIB=$6
+YOSYS=$1; STA=$2; IVERILOG=$3; VERILATOR=$4; PYTHON=$5; LIB=$6; STA_SRC=$7
 OUT=results/tool_versions.txt
 mkdir -p results
 
@@ -32,6 +32,9 @@ ver() {
     echo "## EDA tools"
     ver yosys     "$YOSYS" -V
     ver opensta   "$STA" -version
+    if [ -n "$STA_SRC" ] && [ -d "$STA_SRC/.git" ]; then
+        printf '%-12s %s\n' "opensta src:" "$(git -C "$STA_SRC" log -1 --format='%H (%cd)' --date=short)"
+    fi
     ver iverilog  "$IVERILOG" -V
     ver verilator "$VERILATOR" --version
     echo

@@ -19,6 +19,8 @@ LIB      ?= $(PDK_ROOT)/$(PDK)/libs.ref/sky130_fd_sc_hd/lib/$(LIB_NAME)
 # ---- Tools -----------------------------------------------------------------
 YOSYS     ?= yosys
 STA       ?= $(HOME)/tools/opensta/bin/sta
+# OpenSTA was built from source (see README); its git commit is recorded too.
+OPENSTA_SRC ?= $(HOME)/tools/src/OpenSTA
 IVERILOG  ?= iverilog
 VVP       ?= vvp
 VERILATOR ?= verilator

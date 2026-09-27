@@ -36,7 +36,7 @@ $(VENV)/bin/activate: requirements.txt
 	touch $@
 
 versions: venv
-	bash scripts/tool_versions.sh "$(YOSYS)" "$(STA)" "$(IVERILOG)" "$(VERILATOR)" "$(PYTHON)" "$(LIB)"
+	bash scripts/tool_versions.sh "$(YOSYS)" "$(STA)" "$(IVERILOG)" "$(VERILATOR)" "$(PYTHON)" "$(LIB)" "$(OPENSTA_SRC)"
 
 # Regenerate the Dadda reduction tree (the output file is committed).
 gen: venv
