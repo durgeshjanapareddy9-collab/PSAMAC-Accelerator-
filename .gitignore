@@ -10,7 +10,8 @@ results/*.npy
 results/rtl_dump_*.txt
 results/*.vcd
 results/*.saif
-results/netlists/
+results/synth/*.v
+results/synth/*.log
 build/
 
 # Simulator outputs

@@ -21,7 +21,7 @@ include flow/config.mk
 # Truncation depths covered by the sweep.
 NS := 0 1 2 3 4 5 6 7 8 9 10 11 12
 
-.PHONY: venv versions test metrics synth power sweep baselines eval cnn \
+.PHONY: venv versions test metrics synth synth-one power sweep baselines eval cnn \
         analysis figures all clean
 
 # ---- Setup -------------------------------------------------------------------
@@ -46,8 +46,23 @@ test:
 metrics:
 	@echo "make metrics: not implemented yet (M1.7)"; false
 
+# Liberty copy without "do not use" cells, for Yosys only (see flow/make_synth_lib.py).
+SYNTH_LIB := build/sky130_fd_sc_hd_synth.lib
+$(SYNTH_LIB): $(LIB) flow/make_synth_lib.py
+	@mkdir -p build
+	python3 flow/make_synth_lib.py $(LIB) $@
+
+# Synthesize the reference multiplier (a*b) and print its area.
 synth:
-	@echo "make synth: not implemented yet (M1.2/M1.9)"; false
+	$(MAKE) synth-one TOP=mul_behav N=0 SRCS="rtl/mul_behav.sv"
+	@grep -H "Chip area" $(SYNTH_OUT)/mul_behav_N0_stat.txt
+
+# Synthesize one design:  make synth-one TOP=<module> N=<n> SRCS="<files>"
+SYNTH_OUT := results/synth
+synth-one: $(SYNTH_LIB)
+	@mkdir -p $(SYNTH_OUT)
+	TOP=$(TOP) N=$(N) SRCS="$(SRCS)" LIB=$(SYNTH_LIB) OUT=$(SYNTH_OUT) \
+	    $(YOSYS) -q -l $(SYNTH_OUT)/$(TOP)_N$(N).log -c flow/synth.tcl
 
 power:
 	@echo "make power: not implemented yet (M1.10)"; false
@@ -75,4 +90,4 @@ all: test metrics synth power sweep baselines eval cnn analysis figures
 # Remove generated files (keeps .venv/).
 clean:
 	rm -rf results/*.npy results/rtl_dump_*.txt results/*.vcd results/*.saif \
-	       results/netlists build
+	       results/synth build
