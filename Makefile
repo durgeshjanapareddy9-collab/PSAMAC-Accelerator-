@@ -68,8 +68,9 @@ test-model: venv
 	$(PYTHON) -m pytest -q model/tests
 	$(PYTHON) -m model.approx_mul
 
-metrics:
-	@echo "make metrics: not implemented yet (M1.7)"; false
+# Error metrics for every N -> results/error_metrics.csv, figures/error_vs_N.png
+metrics: venv
+	$(PYTHON) -m model.metrics
 
 # Liberty copy without "do not use" cells, for Yosys only (see flow/make_synth_lib.py).
 SYNTH_LIB := build/sky130_fd_sc_hd_synth.lib
