@@ -45,8 +45,23 @@ gen: venv
 # ---- Project steps (filled in as the tasks in PROGRESS.md are done) ----------
 # Each placeholder fails on purpose, so nobody mistakes it for a passing step.
 
-test: test-model
-	@echo "RTL part of make test: not implemented yet (M1.5/M1.6)"; false
+# RTL files of the approximate multiplier.
+MUL_SRCS := rtl/full_adder.sv rtl/half_adder.sv rtl/dadda8_reduce.sv rtl/approx_mul.sv
+
+# Full test: Python model tests, then RTL vs model for every N.
+test: test-model $(addprefix sim-N,$(NS))
+	$(PYTHON) -m model.check_rtl $(NS)
+
+# Simulate one N and write results/rtl_dump_N<n>.txt:  make sim-N4
+sim-N%: venv
+	@mkdir -p build results
+	$(IVERILOG) -g2012 -Wall -Wno-timescale -P tb_approx_mul_exhaustive.N=$* -o build/tb_mul_N$*.vvp \
+	    tb/tb_approx_mul_exhaustive.sv $(MUL_SRCS)
+	$(VVP) -n build/tb_mul_N$*.vvp
+
+# Simulate and check a single N:  make check-N4
+check-N%: sim-N%
+	$(PYTHON) -m model.check_rtl $*
 
 # Python model unit tests, and build the cached LUTs in results/.
 test-model: venv
