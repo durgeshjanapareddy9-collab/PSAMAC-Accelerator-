@@ -1,0 +1,9 @@
+# Python packages for the AxMAC project.
+# Recreate the environment with:  make venv   (or: python3 -m venv .venv && .venv/bin/pip install -r requirements.txt)
+numpy
+pandas
+matplotlib
+scikit-image
+scipy
+pytest
+# torch and torchvision (CPU builds) are added later, only for the CNN step (M2.9).

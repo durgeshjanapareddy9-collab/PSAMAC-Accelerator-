@@ -1,0 +1,23 @@
+# Python virtual environment and caches
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+
+# Large generated files that any `make` target can rebuild.
+# (Small CSVs and tool_versions.txt in results/ ARE committed.)
+results/*.npy
+results/rtl_dump_*.txt
+results/*.vcd
+results/*.saif
+results/netlists/
+build/
+
+# Simulator outputs
+*.vvp
+*.vcd
+obj_dir/
+
+# Editor files
+.vscode/
+*.swp
