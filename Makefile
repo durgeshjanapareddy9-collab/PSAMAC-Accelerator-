@@ -78,10 +78,11 @@ $(SYNTH_LIB): $(LIB) flow/make_synth_lib.py
 	@mkdir -p build
 	python3 flow/make_synth_lib.py $(LIB) $@
 
-# Synthesize the reference multiplier (a*b) and print its area.
-synth:
-	$(MAKE) synth-one TOP=mul_behav N=0 SRCS="rtl/mul_behav.sv"
-	@grep -H "Chip area" $(SYNTH_OUT)/mul_behav_N0_stat.txt
+# Area and delay (Yosys + OpenSTA) for the exact Dadda multiplier (N=0) and
+# the reference a*b, both inside the registered wrapper -> results/ppa_n0.csv
+PPA = $(PYTHON) flow/ppa.py --lib $(LIB) --synth-lib $(SYNTH_LIB) --yosys $(YOSYS) --sta $(STA)
+synth: venv $(SYNTH_LIB)
+	$(PPA) --out results/ppa_n0.csv --design approx_mul:0 --design mul_behav:0
 
 # Synthesize one design:  make synth-one TOP=<module> N=<n> SRCS="<files>"
 SYNTH_OUT := results/synth

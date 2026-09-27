@@ -1,0 +1,3 @@
+design,module,N,area_mul_um2,cells_mul,area_wrap_um2,flops,min_period_ns,fmax_mhz
+approx_mul_N0,approx_mul,0,1774.2016,236,2414.816,32,4.1916,238.57
+mul_behav,mul_behav,0,1919.3408,233,2559.9552,32,4.0914,244.42

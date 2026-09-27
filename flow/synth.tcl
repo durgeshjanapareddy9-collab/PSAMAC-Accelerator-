@@ -10,8 +10,10 @@
 #   SRCS  space-separated list of SystemVerilog files
 #   LIB   liberty file (set in flow/config.mk)
 #   OUT   output directory
+#   DEFINES  (optional) Verilog macro defines, e.g. "-DMUL=mul_behav"
+#   TAG      (optional) name for the output files (default <TOP>_N<N>)
 #
-# Outputs, with TAG = <TOP>_N<N>:
+# Outputs:
 #   $OUT/<TAG>_stat.txt     cell list, cell count and area (um^2)
 #   $OUT/<TAG>.v            gate-level netlist (used later by OpenSTA)
 #
@@ -24,11 +26,12 @@ set top  $::env(TOP)
 set n    $::env(N)
 set lib  $::env(LIB)
 set out  $::env(OUT)
-set tag  "${top}_N${n}"
+set tag  [expr {[info exists ::env(TAG)] ? $::env(TAG) : "${top}_N${n}"}]
+set defs [expr {[info exists ::env(DEFINES)] ? $::env(DEFINES) : ""}]
 file mkdir $out
 
 # 1. Read the RTL and pick the top module, setting its parameter N.
-foreach f $::env(SRCS) { read_verilog -sv $f }
+foreach f $::env(SRCS) { read_verilog -sv {*}$defs $f }
 hierarchy -check -top $top -chparam N $n
 
 # 2. Generic synthesis: turn the RTL into simple logic gates, flattened into
