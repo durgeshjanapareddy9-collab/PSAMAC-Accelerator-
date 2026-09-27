@@ -97,8 +97,10 @@ power: synth
 	$(PYTHON) flow/power.py --out results/power_n0.csv --design approx_mul:0 --design mul_behav:0 \
 	    --lib $(LIB) --sta $(STA) --cell-models $(CELL_MODELS) --iverilog $(IVERILOG) --vvp $(VVP)
 
-sweep:
-	@echo "make sweep: not implemented yet (M1.11/M2.5)"; false
+# Area and delay for every N, plus a*b -> results/ppa_mul.csv
+# (power across N is added in Milestone 2 with image stimulus)
+sweep: venv $(SYNTH_LIB)
+	$(PPA) --out results/ppa_mul.csv $(foreach n,$(NS),--design approx_mul:$(n)) --design mul_behav:0
 
 baselines:
 	@echo "make baselines: not implemented yet (M2.6/M2.7)"; false

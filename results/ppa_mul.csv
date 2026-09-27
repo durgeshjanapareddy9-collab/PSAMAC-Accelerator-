@@ -1,0 +1,15 @@
+design,module,N,area_mul_um2,cells_mul,area_wrap_um2,flops,min_period_ns,fmax_mhz
+approx_mul_N0,approx_mul,0,1774.2016,236,2414.816,32,4.1916,238.57
+approx_mul_N1,approx_mul,1,1771.6992,236,2392.2944,31,4.1916,238.57
+approx_mul_N2,approx_mul,2,1714.144,228,2314.72,30,4.3936,227.6
+approx_mul_N3,approx_mul,3,1640.3232,225,2220.88,29,4.6945,213.02
+approx_mul_N4,approx_mul,4,1560.2464,200,2120.784,28,4.3099,232.02
+approx_mul_N5,approx_mul,5,1417.6096,185,1958.128,27,4.1968,238.28
+approx_mul_N6,approx_mul,6,1277.4752,161,1797.9744,26,3.4579,289.19
+approx_mul_N7,approx_mul,7,1040.9984,138,1541.4784,25,4.2561,234.96
+approx_mul_N8,approx_mul,8,802.0192,100,1242.4416,22,3.2826,304.64
+approx_mul_N9,approx_mul,9,584.3104,73,964.6752,19,2.9328,340.97
+approx_mul_N10,approx_mul,10,415.3984,53,735.7056,16,2.343,426.8
+approx_mul_N11,approx_mul,11,245.2352,34,505.4848,13,1.989,502.77
+approx_mul_N12,approx_mul,12,120.1152,21,320.3072,10,1.2507,799.55
+mul_behav,mul_behav,0,1919.3408,233,2559.9552,32,4.0914,244.42

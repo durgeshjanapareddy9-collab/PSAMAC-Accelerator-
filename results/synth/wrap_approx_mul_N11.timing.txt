@@ -1,0 +1,41 @@
+Startpoint: _68_ (rising edge-triggered flip-flop clocked by clk)
+Endpoint: _72_ (rising edge-triggered flip-flop clocked by clk)
+Path Group: clk
+Path Type: max
+
+     Cap     Slew    Delay     Time   Description
+---------------------------------------------------------------------------
+            0.000    0.000    0.000   clock clk (rise edge)
+                     0.000    0.000   clock network delay (ideal)
+            0.000    0.000    0.000 ^ _68_/CLK (sky130_fd_sc_hd__dfxtp_1)
+   0.011    0.117    0.339    0.339 ^ _68_/Q (sky130_fd_sc_hd__dfxtp_1)
+            0.117    0.000    0.339 ^ _30_/C (sky130_fd_sc_hd__and4_1)
+   0.004    0.066    0.203    0.542 ^ _30_/X (sky130_fd_sc_hd__and4_1)
+            0.066    0.000    0.542 ^ _39_/B1_N (sky130_fd_sc_hd__o21ba_1)
+   0.006    0.052    0.159    0.702 v _39_/X (sky130_fd_sc_hd__o21ba_1)
+            0.052    0.000    0.702 v _48_/C (sky130_fd_sc_hd__maj3_1)
+   0.006    0.087    0.374    1.075 v _48_/X (sky130_fd_sc_hd__maj3_1)
+            0.087    0.000    1.075 v _55_/C (sky130_fd_sc_hd__maj3_1)
+   0.006    0.085    0.382    1.457 v _55_/X (sky130_fd_sc_hd__maj3_1)
+            0.085    0.000    1.457 v _56_/B (sky130_fd_sc_hd__xnor2_1)
+   0.004    0.058    0.144    1.602 v _56_/Y (sky130_fd_sc_hd__xnor2_1)
+            0.058    0.000    1.602 v _57_/B1 (sky130_fd_sc_hd__a21o_1)
+   0.003    0.036    0.155    1.757 v _57_/X (sky130_fd_sc_hd__a21o_1)
+            0.036    0.000    1.757 v _59_/A (sky130_fd_sc_hd__and2_0)
+   0.002    0.033    0.117    1.873 v _59_/X (sky130_fd_sc_hd__and2_0)
+            0.033    0.000    1.873 v _72_/D (sky130_fd_sc_hd__dfxtp_1)
+                              1.873   data arrival time
+
+            0.000   10.000   10.000   clock clk (rise edge)
+                     0.000   10.000   clock network delay (ideal)
+                     0.000   10.000   clock reconvergence pessimism
+                             10.000 ^ _72_/CLK (sky130_fd_sc_hd__dfxtp_1)
+                    -0.116    9.884   library setup time
+                              9.884   data required time
+---------------------------------------------------------------------------
+                              9.884   data required time
+                             -1.873   data arrival time
+---------------------------------------------------------------------------
+                              8.011   slack (MET)
+
+

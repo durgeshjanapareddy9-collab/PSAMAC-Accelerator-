@@ -1,0 +1,36 @@
+
+15. Printing statistics.
+
+=== mul_wrap ===
+
+   Number of wires:                 88
+   Number of wire bits:            117
+   Number of public wires:          23
+   Number of public wire bits:      52
+   Number of memories:               0
+   Number of memory bits:            0
+   Number of processes:              0
+   Number of cells:                 92
+     sky130_fd_sc_hd__a21o_1         1
+     sky130_fd_sc_hd__a22oi_1        4
+     sky130_fd_sc_hd__a31oi_1        1
+     sky130_fd_sc_hd__and2_0         3
+     sky130_fd_sc_hd__and4_1         4
+     sky130_fd_sc_hd__conb_1         1
+     sky130_fd_sc_hd__dfxtp_1       19
+     sky130_fd_sc_hd__maj3_1         7
+     sky130_fd_sc_hd__nand2_1       12
+     sky130_fd_sc_hd__nand2b_1       3
+     sky130_fd_sc_hd__nand3_1        1
+     sky130_fd_sc_hd__nor2_1         4
+     sky130_fd_sc_hd__nor2b_1        3
+     sky130_fd_sc_hd__o21ai_0        3
+     sky130_fd_sc_hd__o21ba_1        2
+     sky130_fd_sc_hd__o21bai_1       1
+     sky130_fd_sc_hd__or3_1          1
+     sky130_fd_sc_hd__xnor2_1        7
+     sky130_fd_sc_hd__xnor3_1        5
+     sky130_fd_sc_hd__xor2_1        10
+
+   Chip area for module '\mul_wrap': 964.675200
+
