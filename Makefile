@@ -2,6 +2,7 @@
 #
 #   make venv       create .venv/ and install Python packages
 #   make versions   record tool versions in results/tool_versions.txt
+#   make gen        regenerate rtl/dadda8_reduce.sv from scripts/gen_dadda.py
 #   make test       RTL vs Python model, all 65,536 input pairs, N = 0..12
 #   make metrics    error metrics (MED, NMED, MRED, ER, ME, EDmax)
 #   make synth      Yosys synthesis to sky130 (area)
@@ -21,7 +22,7 @@ include flow/config.mk
 # Truncation depths covered by the sweep.
 NS := 0 1 2 3 4 5 6 7 8 9 10 11 12
 
-.PHONY: venv versions test test-model metrics synth synth-one power sweep baselines eval cnn \
+.PHONY: venv versions gen test test-model metrics synth synth-one power sweep baselines eval cnn \
         analysis figures all clean
 
 # ---- Setup -------------------------------------------------------------------
@@ -36,6 +37,10 @@ $(VENV)/bin/activate: requirements.txt
 
 versions: venv
 	bash scripts/tool_versions.sh "$(YOSYS)" "$(STA)" "$(IVERILOG)" "$(VERILATOR)" "$(PYTHON)" "$(LIB)"
+
+# Regenerate the Dadda reduction tree (the output file is committed).
+gen: venv
+	$(PYTHON) scripts/gen_dadda.py
 
 # ---- Project steps (filled in as the tasks in PROGRESS.md are done) ----------
 # Each placeholder fails on purpose, so nobody mistakes it for a passing step.
