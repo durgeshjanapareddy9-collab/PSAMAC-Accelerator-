@@ -1,7 +1,5 @@
 # AxMAC: a precision-scalable approximate MAC accelerator
 
-AI Accelerators course project, IIIT Dharwad.
-
 An 8x8 unsigned Dadda multiplier whose amount of approximation is a single
 compile-time parameter **N**: the partial products in the lowest N columns
 are dropped (N = 0 is exact). We verify it exhaustively against a Python
