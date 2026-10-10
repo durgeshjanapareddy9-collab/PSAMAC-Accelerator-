@@ -8,6 +8,7 @@
 #   make synth      Yosys synthesis to sky130 (area)
 #   make power      OpenSTA power from simulation activity
 #   make sweep      area/delay/power for every N
+#   make report     results/flow_report.md: all Yosys/OpenSTA/power results in one file
 #   make baselines  EvoApproxLib / TruMD designs through the same flow
 #   make eval       image convolution quality (PSNR, SSIM)
 #   make cnn        CNN top-1 accuracy
@@ -22,7 +23,7 @@ include flow/config.mk
 # Truncation depths covered by the sweep.
 NS := 0 1 2 3 4 5 6 7 8 9 10 11 12
 
-.PHONY: venv versions gen test test-model metrics synth synth-one power sweep baselines eval cnn \
+.PHONY: venv versions gen test test-model metrics synth synth-one power sweep report baselines eval cnn \
         analysis figures all clean
 
 # ---- Setup -------------------------------------------------------------------
@@ -102,6 +103,11 @@ power: synth
 sweep: venv $(SYNTH_LIB)
 	$(PPA) --out results/ppa_mul.csv $(foreach n,$(NS),--design approx_mul:$(n)) --design mul_behav:0
 
+# One readable report of the flow results -> results/flow_report.md
+# (reads the CSVs and reports written by `make synth power sweep`).
+report: venv
+	$(PYTHON) flow/report.py --out results/flow_report.md
+
 baselines:
 	@echo "make baselines: not implemented yet (M2.6/M2.7)"; false
 
@@ -117,7 +123,7 @@ analysis:
 figures:
 	@echo "make figures: not implemented yet (M2.12)"; false
 
-all: test metrics synth power sweep baselines eval cnn analysis figures
+all: test metrics synth power sweep report baselines eval cnn analysis figures
 
 # Remove generated files (keeps .venv/).
 clean:

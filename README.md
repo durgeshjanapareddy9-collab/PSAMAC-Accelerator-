@@ -23,6 +23,7 @@ make metrics    # results/error_metrics.csv, figures/error_vs_N.png
 make synth      # area + delay, N = 0 vs a*b     -> results/ppa_n0.csv
 make power      # power,        N = 0 vs a*b     -> results/power_n0.csv
 make sweep      # area + delay for every N       -> results/ppa_mul.csv
+make report     # all flow results in one file   -> results/flow_report.md
 make versions   # tool versions                  -> results/tool_versions.txt
 make gen        # regenerate rtl/dadda8_reduce.sv
 ```
@@ -86,6 +87,8 @@ make -j && make install          # -> ~/tools/opensta/bin/sta
    setup and hold slack, WNS/TNS and the max/min path delays.
 5. `flow/power.py` simulates the gate-level netlist (`tb/tb_power.sv`) and runs
    `flow/power.tcl` (OpenSTA `read_vcd` + `report_power`).
+6. `flow/report.py` collects the results of steps 4 and 5 into
+   `results/flow_report.md` (setup, summary, tables, limitations).
 
 Corner: `sky130_fd_sc_hd__tt_025C_1v80` (typical, 25 °C, 1.80 V), pre-layout.
 
