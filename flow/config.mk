@@ -26,6 +26,8 @@ OPENSTA_SRC ?= $(HOME)/tools/src/OpenSTA
 IVERILOG  ?= iverilog
 VVP       ?= vvp
 VERILATOR ?= verilator
+# Graphviz, draws the Yosys `show` diagrams (make diagrams).
+DOT       ?= dot
 
 # Python from the project virtual environment (created by `make venv`).
 VENV   ?= .venv

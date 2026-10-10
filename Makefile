@@ -9,6 +9,7 @@
 #   make power      OpenSTA power from simulation activity
 #   make sweep      area/delay/power for every N
 #   make report     results/flow_report.md: all Yosys/OpenSTA/power results in one file
+#   make diagrams   Graphviz circuit diagrams from Yosys `show` -> figures/yosys_*
 #   make baselines  EvoApproxLib / TruMD designs through the same flow
 #   make eval       image convolution quality (PSNR, SSIM)
 #   make cnn        CNN top-1 accuracy
@@ -23,7 +24,7 @@ include flow/config.mk
 # Truncation depths covered by the sweep.
 NS := 0 1 2 3 4 5 6 7 8 9 10 11 12
 
-.PHONY: venv versions gen test test-model metrics synth synth-one power sweep report baselines eval cnn \
+.PHONY: venv versions gen test test-model metrics synth synth-one power sweep report diagrams baselines eval cnn \
         analysis figures all clean
 
 # ---- Setup -------------------------------------------------------------------
@@ -107,6 +108,11 @@ sweep: venv $(SYNTH_LIB)
 # (reads the CSVs and reports written by `make synth power sweep`).
 report: venv
 	$(PYTHON) flow/report.py --out results/flow_report.md
+
+# Circuit diagrams (Yosys `show` + Graphviz dot) -> figures/yosys_*.svg/.png
+# The gate-level views use the netlists from `make sweep`.
+diagrams: venv
+	$(PYTHON) flow/diagrams.py --lib $(LIB) --yosys $(YOSYS) --dot $(DOT)
 
 baselines:
 	@echo "make baselines: not implemented yet (M2.6/M2.7)"; false

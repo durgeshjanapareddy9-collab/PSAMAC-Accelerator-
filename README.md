@@ -24,6 +24,7 @@ make synth      # area + delay, N = 0 vs a*b     -> results/ppa_n0.csv
 make power      # power,        N = 0 vs a*b     -> results/power_n0.csv
 make sweep      # area + delay for every N       -> results/ppa_mul.csv
 make report     # all flow results in one file   -> results/flow_report.md
+make diagrams   # circuit diagrams (Yosys show)  -> figures/yosys_*.svg/.png
 make versions   # tool versions                  -> results/tool_versions.txt
 make gen        # regenerate rtl/dadda8_reduce.sv
 ```
