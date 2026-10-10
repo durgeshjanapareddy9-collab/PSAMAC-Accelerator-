@@ -81,7 +81,9 @@ make -j && make install          # -> ~/tools/opensta/bin/sta
 3. `tb/tb_approx_mul_exhaustive.sv` dumps all 65,536 outputs;
    `model/check_rtl.py` compares them with `model/approx_mul.py`.
 4. `flow/ppa.py` synthesizes `rtl/mul_wrap.sv` (flip-flops around the
-   multiplier) with `flow/synth.tcl` and times it with `flow/sta.tcl`.
+   multiplier) with `flow/synth.tcl` and times it with `flow/sta.tcl`
+   (constraints in `flow/mul_wrap.sdc`): area, cell counts, Yosys `check`,
+   setup and hold slack, WNS/TNS and the max/min path delays.
 5. `flow/power.py` simulates the gate-level netlist (`tb/tb_power.sv`) and runs
    `flow/power.tcl` (OpenSTA `read_vcd` + `report_power`).
 

@@ -4,7 +4,9 @@ For each design (a multiplier module and a value of N) this script
   1. synthesizes rtl/mul_wrap.sv around that multiplier (flow/synth.tcl),
   2. reads the cell counts from Yosys and the cell areas from the liberty file,
      and splits the area into flip-flops (the wrapper) and the multiplier,
-  3. runs OpenSTA (flow/sta.tcl) for the minimum clock period,
+  3. runs OpenSTA (flow/sta.tcl) for the minimum clock period, setup and
+     hold slack (WNS/TNS, violations) and the max/min path delays,
+  4. records the Yosys structural check and warning counts,
 and writes one CSV row per design.
 
 Area and delay come from the same netlist. Area is also reported for the
@@ -108,10 +110,29 @@ def ppa_one(mul, n, args, areas):
               {"NETLIST": str(SYNTH_OUT / f"{tag}.v"), "LIB": args.lib,
                "OUT": str(SYNTH_OUT / tag)},
               SYNTH_OUT / f"{tag}_sta.log")
-    m = re.search(r"MIN_PERIOD_NS\s+([0-9.]+)", out)
+    sta = dict(re.findall(r"^([A-Z0-9_]+) (-?[0-9.]+)$", out, re.M))
+    keys = ["MIN_PERIOD_NS", "SETUP_SLACK_NS", "SETUP_WNS_NS", "SETUP_TNS_NS",
+            "SETUP_VIOLATIONS", "HOLD_SLACK_NS", "HOLD_SLACK_R2R_NS", "HOLD_WNS_NS",
+            "HOLD_TNS_NS", "HOLD_VIOLATIONS", "ENDPOINTS", "MAX_PATH_ARRIVAL_NS",
+            "MAX_PATH_CELL_DELAY_NS", "MAX_PATH_NET_DELAY_NS", "MAX_PATH_CELLS",
+            "MIN_PATH_ARRIVAL_NS", "MIN_PATH_CELL_DELAY_NS", "MIN_PATH_NET_DELAY_NS"]
+    missing = [k for k in keys if k not in sta]
+    if missing:
+        sys.exit(f"ERROR: {missing} not in OpenSTA output for {tag}:\n{out}")
+    min_period = float(sta["MIN_PERIOD_NS"])
+    # check_setup prints nothing when the constraints have no problems.
+    sta_issues = len((SYNTH_OUT / f"{tag}.checks.txt").read_text().splitlines())
+
+    # 4. Yosys structural check and warnings.
+    check = (SYNTH_OUT / f"{tag}_check.txt").read_text()
+    m = re.search(r"Found and reported (\d+) problems", check)
     if not m:
-        sys.exit(f"ERROR: no MIN_PERIOD_NS in OpenSTA output for {tag}:\n{out}")
-    min_period = float(m.group(1))
+        sys.exit(f"ERROR: no problem count in {tag}_check.txt:\n{check}")
+    warnings = [l for l in (SYNTH_OUT / f"{tag}.log").read_text().splitlines()
+                if l.startswith("Warning:")]
+    # Warnings about cells the liberty parser cannot model (scan/enable flops,
+    # which this design never uses) vs anything else.
+    lib_warnings = [l for l in warnings if "in pin attribute of cell" in l]
 
     return {
         "design": f"{mul}_N{n}" if mul == "approx_mul" else mul,
@@ -123,6 +144,30 @@ def ppa_one(mul, n, args, areas):
         "flops": flop_cells,
         "min_period_ns": min_period,
         "fmax_mhz": round(1000.0 / min_period, 2),
+        # Yosys
+        "cell_types": len(counts),
+        "yosys_check_problems": int(m.group(1)),
+        "yosys_warnings": len(warnings),
+        "yosys_liberty_warnings": len(lib_warnings),
+        # OpenSTA, slacks at the 10 ns clock in flow/mul_wrap.sdc
+        "setup_slack_ns": float(sta["SETUP_SLACK_NS"]),
+        "setup_wns_ns": float(sta["SETUP_WNS_NS"]),
+        "setup_tns_ns": float(sta["SETUP_TNS_NS"]),
+        "setup_violations": int(sta["SETUP_VIOLATIONS"]),
+        "hold_slack_ns": float(sta["HOLD_SLACK_NS"]),
+        "hold_slack_r2r_ns": float(sta["HOLD_SLACK_R2R_NS"]),
+        "hold_wns_ns": float(sta["HOLD_WNS_NS"]),
+        "hold_tns_ns": float(sta["HOLD_TNS_NS"]),
+        "hold_violations": int(sta["HOLD_VIOLATIONS"]),
+        "endpoints": int(sta["ENDPOINTS"]),
+        "sta_check_issues": sta_issues,
+        "max_path_ns": float(sta["MAX_PATH_ARRIVAL_NS"]),
+        "max_path_cell_ns": float(sta["MAX_PATH_CELL_DELAY_NS"]),
+        "max_path_net_ns": float(sta["MAX_PATH_NET_DELAY_NS"]),
+        "max_path_cells": int(sta["MAX_PATH_CELLS"]),
+        "min_path_ns": float(sta["MIN_PATH_ARRIVAL_NS"]),
+        "min_path_cell_ns": float(sta["MIN_PATH_CELL_DELAY_NS"]),
+        "min_path_net_ns": float(sta["MIN_PATH_NET_DELAY_NS"]),
     }
 
 

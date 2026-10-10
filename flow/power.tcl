@@ -18,9 +18,8 @@ read_liberty $::env(LIB)
 read_verilog $::env(NETLIST)
 link_design  mul_wrap
 
-create_clock -name clk -period $::env(CLK_NS) [get_ports clk]
-set_input_delay  0.0 -clock clk [delete_from_list [all_inputs] [get_ports clk]]
-set_output_delay 0.0 -clock clk [all_outputs]
+# Same constraints as timing; the clock period comes from CLK_NS.
+read_sdc     [file join [file dirname [info script]] mul_wrap.sdc]
 
 read_vcd -scope $::env(SCOPE) $::env(VCD)
 

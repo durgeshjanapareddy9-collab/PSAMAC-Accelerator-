@@ -1,0 +1,31 @@
+Startpoint: _38_ (rising edge-triggered flip-flop clocked by clk)
+Endpoint: _45_ (rising edge-triggered flip-flop clocked by clk)
+Path Group: clk
+Path Type: min
+
+     Cap     Slew    Delay     Time   Description
+---------------------------------------------------------------------------
+            0.000    0.000    0.000   clock clk (rise edge)
+                     0.000    0.000   clock network delay (ideal)
+            0.000    0.000    0.000 ^ _38_/CLK (sky130_fd_sc_hd__dfxtp_1)
+   0.011    0.063    0.308    0.308 v _38_/Q (sky130_fd_sc_hd__dfxtp_1)
+            0.063    0.000    0.308 v _31_/A (sky130_fd_sc_hd__nand3_1)
+   0.002    0.041    0.062    0.370 ^ _31_/Y (sky130_fd_sc_hd__nand3_1)
+            0.041    0.000    0.370 ^ _35_/B1 (sky130_fd_sc_hd__o21ai_0)
+   0.002    0.036    0.059    0.429 v _35_/Y (sky130_fd_sc_hd__o21ai_0)
+            0.036    0.000    0.429 v _45_/D (sky130_fd_sc_hd__dfxtp_1)
+                              0.429   data arrival time
+
+            0.000    0.000    0.000   clock clk (rise edge)
+                     0.000    0.000   clock network delay (ideal)
+                     0.000    0.000   clock reconvergence pessimism
+                              0.000 ^ _45_/CLK (sky130_fd_sc_hd__dfxtp_1)
+                    -0.060   -0.060   library hold time
+                             -0.060   data required time
+---------------------------------------------------------------------------
+                             -0.060   data required time
+                             -0.429   data arrival time
+---------------------------------------------------------------------------
+                              0.489   slack (MET)
+
+

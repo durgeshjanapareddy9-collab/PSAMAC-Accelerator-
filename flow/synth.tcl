@@ -15,6 +15,7 @@
 #
 # Outputs:
 #   $OUT/<TAG>_stat.txt     cell list, cell count and area (um^2)
+#   $OUT/<TAG>_check.txt    structural checks on the final netlist
 #   $OUT/<TAG>.v            gate-level netlist (used later by OpenSTA)
 #
 # (We use a .tcl script instead of a plain .ys script because .ys scripts
@@ -55,3 +56,13 @@ opt_clean -purge
 # 5. Reports and netlist.
 tee -o $out/${tag}_stat.txt stat -liberty $lib
 write_verilog -noattr -noexpr -nohex -nodec $out/${tag}.v
+
+# 6. Structural check of the final netlist: wires nobody drives, wires with
+#    more than one driver, and combinational loops. It ends with
+#    "Found and reported N problems." (N should be 0).
+#    `check` must know which sky130 cell pins are outputs (e.g. a flop's Q),
+#    otherwise every output port driven by a flop looks undriven. read_liberty
+#    -lib loads only the pin directions (empty "blackbox" cells); it comes
+#    after the reports above so it cannot change them.
+read_liberty -lib $lib
+tee -o $out/${tag}_check.txt check
